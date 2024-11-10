@@ -13,10 +13,11 @@ async function main({
   const contract = await viem.getContractAt("TokenizedVote",
     contractAddress  
   );
+  const tokens = await contract.read.balanceOf([voter]);
   const votes = await contract.read.getVotes([voter]);
     console.log(
         `Account ${voter
-        } has ${votes.toString()} units of voting power\n`
+        } has ${tokens} with ${votes.toString()} units of voting power\n`
     );
 
 }  

@@ -14,9 +14,7 @@ async function main({
 
   );
   await waitsForTransaction(
-    async () => await contract.write.mint([voter, mintValue], {
-
-    })
+    async () => await contract.write.mint([voter, mintValue])
   )
   console.log(
     `Minted ${mintValue.toString()} decimal units to account ${voter

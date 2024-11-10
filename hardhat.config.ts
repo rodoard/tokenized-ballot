@@ -5,7 +5,8 @@ import * as dotenv from "dotenv";
 dotenv.config();
 
 const providerApiKey = process.env.ALCHEMY_API_KEY || "";
-const deployerPrivateKey = process.env.PRIVATE_KEY || "";
+const deployerPrivateKey = process.env.SEPOLIA_PRIVATE_KEY || "";
+const sepoliaAddress = process.env.SEPOLIA_WALLET_ADDRESS
 
 const config: HardhatUserConfig = {
   solidity: "0.8.27",
@@ -37,7 +38,7 @@ task("deployTokenizedBallot", "Deploys tokenized ballot")
   });
 
 import mintTokens from "./scripts/mintTokens"
-import { parseEther } from "viem";
+import { Hex, parseEther } from "viem";
   
 task("mintToken", "Mints tokens")
 .addParam("contract", "Voting token contract address") 
@@ -62,14 +63,21 @@ task("getVotingPower", "Gets voter voting power")
   })
 });
 
+import delegateVotingPower from "./scripts/delegateVotingPower"
 
-task("delegateVotingPower", "delegate voting power")
+task("delegateVotingPower", "self delegate voting power")
 .addParam("contract", "Voting token contract address") 
-.addParam("voter", "Voter address")
 .setAction(async (taskArgs, hre) => {
-  const {contract, voter}  = taskArgs
-  await getVotingPower({hre,
-    voter, contractAddress:contract  
+  const { contract } = taskArgs;
+  const delegator = sepoliaAddress as Hex;
+  const delegatee = delegator
+  const privateKey = `0x${deployerPrivateKey}` as Hex
+  await delegateVotingPower({
+    hre,
+    privateKey,
+    delegator,
+    delegatee,
+    contractAddress: contract  
   })
 });
 
