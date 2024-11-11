@@ -1,3 +1,4 @@
+import { exit } from "process";
 
 async function main({
   contractAddress,
@@ -5,15 +6,10 @@ async function main({
 }:{hre:any, contractAddress:`0x${string}`, voter:`0x${string}`}) {
   const viem = hre.viem
   const publicClient = await viem.getPublicClient();
-
-  async function waitsForTransaction(fn: any) {
-    const hash = await fn()
-    await publicClient.waitForTransactionReceipt({ hash })
-  }
   const contract = await viem.getContractAt("TokenizedVote",
     contractAddress  
   );
-  const tokens = await contract.read.balanceOf([voter]);
+  const tokens = await contract.read.balanceOf([voter])
   const votes = await contract.read.getVotes([voter]);
     console.log(
         `Account ${voter

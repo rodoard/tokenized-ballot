@@ -1,19 +1,19 @@
 import { stringToHex } from "viem";
+import getBlockNumber from "./getBlockNumber";
 
 type Params = {
-  proposals: string[], token: string, target: bigint, hre: any
+  proposals: string[], token: string,  hre: any
 }
 
 async function main({
- proposals , token, target, hre
+ proposals , token,  hre
 }:Params) {
   const viem = hre.viem;
   const hexedProposals = proposals.map(p=>stringToHex(p, {size:32}))
-  const publicClient = await viem.getPublicClient();
-  const [deployer, account1, account2] = await viem.getWalletClients();
   const tokenContract = await viem.deployContract("TokenizedBallot", [
-     hexedProposals, token, target
+     hexedProposals, token
     ]);
-    console.log(`Contract deployed at ${tokenContract.address}`);
+  console.log(`Contract deployed at ${tokenContract.address}`);
+  await getBlockNumber({viem});
 }
 export default main

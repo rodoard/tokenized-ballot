@@ -15,20 +15,46 @@ Try running some of the following tasks:
 ```shell
 //install dependencies
 yarn install 
+
+#deploy tokenized voting token
 npx hardhat run scripts/deployTokenizedVote.ts --network sepolia
 
 # voter will own 10 units
-npx hardhat mintToken --contract contractAddressOnSepoloa --voter voterAddressOnSepolia  --mint 10 --network sepolia
+npx hardhat mintToken --contract contractAddressOnSepolia --voter voterAddressOnSepolia  --mint 10 --network sepolia
 
 #but voting power is 0
-npx hardhat getVotingPower --contract contractAddressOnSepoloa --voter voterAddressOnSepolia  --network sepolia
+npx hardhat getVotingPower --contract contractAddressOnSepolia --voter voterAddressOnSepolia  --network sepolia
 
 #depends on env variable SEPOLIA_PRIVATE_KEY on metamask wallet and SEPOLIA_WALLET_ADDRESS 
 #you can create a second address and switch private key and wallet address for different voters
 #script implements self delegate
-npx hardhat delegateVotingPower --contract contractAddressOnSepoloa  --network sepolia
+npx hardhat delegateVotingPower --contract contractAddressOnSepolia  --network sepolia
 
 #voting power should now update
-npx hardhat getVotingPower --contract contractAddressOnSepoloa --voter voterAddressOnSepolia  --network sepolia
+npx hardhat getVotingPower --contract contractAddressOnSepolia --voter voterAddressOnSepolia  --network sepolia
 
+#deploy tokenized ballot
+npx hardhat deployTokenizedBallot --propsoals commaSeparatedListOfStrings like  "Apple, Banana, Cherry, Raisins"  --token tokenizedVoteTokenAddressOnSepolia  --network sepolia
+
+#get available ballot voting power formatted in ether units should be 0 so far
+npx hardhat getBallotVotingPower --contract ballotContractAddressOnSepolia --voter voterAddressOnSepolia  --network sepolia
+
+#gets latest block number on chain
+npx hardhat getBlockNumber  --network sepolia
+
+#set ballot target block number 
+npx hardhat setBallotTargetBlockNumber --contract ballotContractAddressOnSepolia  --target targetBlockNumberOnSepolia  --network sepolia 
+
+#get available ballot voting power should not be 0 
+npx hardhat getBallotVotingPower --contract ballotContractAddressOnSepolia --voter voterAddressOnSepolia  --network sepolia
+
+
+#self castVote 
+npx hardhat castVote --contract ballotContractAddressOnSepolia --proposal proposalIndex --power votingPowerToConsume  --network sepolia
+
+#get available ballot voting power should be less 
+npx hardhat getBallotVotingPower --contract ballotContractAddressOnSepolia --voter voterAddressOnSepolia  --network sepolia
+
+#get vote results who won runner ups?
+npx hardhat geVoteResult --contract ballotContractAddressOnSepolia --network sepolia
 ```

@@ -1,7 +1,7 @@
-import { exit } from 'process';
-import { createWalletClient, parseSignature as splitSignature, http, stringToHex, Hex} from 'viem';
-import { privateKeyToAccount, signTypedData } from 'viem/accounts'
+import { parseSignature as splitSignature, http, stringToHex, Hex} from 'viem';
+import { getWalletClient, waitsForTransaction } from './util';
 import { sepolia } from 'viem/chains';
+import { signTypedData } from 'viem/accounts';
 
 const providerApiKey = process.env.ALCHEMY_API_KEY || "";
 type Params = {
@@ -61,26 +61,9 @@ async function main({
 }:{hre:any, privateKey:Hex, contractAddress:Hex, delegator:Hex, delegatee:Hex}) {
   const viem = hre.viem
   const publicClient = await viem.getPublicClient();
-  async function waitsForTransaction(fn: any) {
-    const hash = await fn()
-    await publicClient.waitForTransactionReceipt({ hash })
-  }
-  const privateKeys = [
+  const walletClient = getWalletClient({
     privateKey
-  ]
-  const signers = privateKeys.map((privateKey) => {
-      const account = privateKeyToAccount( privateKey as Hex);
-      return createWalletClient({
-        account,
-        chain: sepolia,
-        transport: http(
-          `https://eth-sepolia.g.alchemy.com/v2/${providerApiKey}`
-        )
-      });
-    });
-  const signer = signers[0]
-  const walletClient = signer 
-  
+  })
   const contractName = "TokenizedVote"
   const contract = await viem.getContractAt(contractName,
     contractAddress, {
@@ -91,7 +74,6 @@ async function main({
   );
   const nonce = await contract.read.nonces([delegator]);
   const expiry = Math.floor(Date.now() / 1000) + 3600 * 48; // Expiry set to 1 hour from now
-
   const { signature} = await getSignature({
     contractName, 
     privateKey,
@@ -113,8 +95,9 @@ async function main({
      v,
      r,
      s
-  ])
+  ]), hre
   )
+  
  console.log(
         `Account ${delegatee
         } has delegated successfully\n`
