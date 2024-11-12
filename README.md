@@ -56,5 +56,5 @@ npx hardhat castVote --contract ballotContractAddressOnSepolia --proposal propos
 npx hardhat getBallotVotingPower --contract ballotContractAddressOnSepolia --voter voterAddressOnSepolia  --network sepolia
 
 #get vote results who won runner ups?
-npx hardhat geVoteResult --contract ballotContractAddressOnSepolia --network sepolia
+npx hardhat geVoteResults --contract ballotContractAddressOnSepolia --network sepolia
 ```
