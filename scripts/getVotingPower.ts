@@ -1,4 +1,5 @@
 import { exit } from "process";
+import { formatEther } from "viem";
 
 async function main({
   contractAddress,
@@ -13,7 +14,7 @@ async function main({
   const votes = await contract.read.getVotes([voter]);
     console.log(
         `Account ${voter
-        } has ${tokens} with ${votes.toString()} units of voting power\n`
+        } has ${tokens} with ${formatEther(votes.toString())} units of voting power\n`
     );
 
 }  

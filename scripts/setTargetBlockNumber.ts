@@ -12,7 +12,7 @@ async function main({
   )
   const update = await contract.read.targetBlockNumber()
   console.log(
-    `Target block number updated successfully to ${update}"\n`
+    `Target block number updated successfully to ${update}\n`
   );
 
 }

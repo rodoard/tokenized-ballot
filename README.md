@@ -34,7 +34,7 @@ npx hardhat delegateVotingPower --contract contractAddressOnSepolia  --network s
 npx hardhat getVotingPower --contract contractAddressOnSepolia --voter voterAddressOnSepolia  --network sepolia
 
 #deploy tokenized ballot
-npx hardhat deployTokenizedBallot --propsoals commaSeparatedListOfStrings like  "Apple, Banana, Cherry, Raisins"  --token tokenizedVoteTokenAddressOnSepolia  --network sepolia
+npx hardhat deployTokenizedBallot --proposals commaSeparatedListOfStrings like  "Apple, Banana, Chocolate, Pumpkin"  --token tokenizedVoteTokenAddressOnSepolia  --network sepolia
 
 #get available ballot voting power formatted in ether units should be 0 so far
 npx hardhat getBallotVotingPower --contract ballotContractAddressOnSepolia --voter voterAddressOnSepolia  --network sepolia
@@ -48,13 +48,18 @@ npx hardhat setBallotTargetBlockNumber --contract ballotContractAddressOnSepolia
 #get available ballot voting power should not be 0 
 npx hardhat getBallotVotingPower --contract ballotContractAddressOnSepolia --voter voterAddressOnSepolia  --network sepolia
 
+#get available ballot voting power should be less 
+npx hardhat getBallotVotingPower --contract ballotContractAddressOnSepolia --voter voterAddressOnSepolia  --network sepolia
+
+#display available proposals
+npx hardhat getProposals --contract ballotContractAddressOnSepolia --network sepolia
+
+#display vote results no winners since votes not yet cast
+npx hardhat getVoteResults --contract ballotContractAddressOnSepolia --network sepolia
 
 #self castVote 
 npx hardhat castVote --contract ballotContractAddressOnSepolia --proposal proposalIndex --power votingPowerToConsume  --network sepolia
 
-#get available ballot voting power should be less 
-npx hardhat getBallotVotingPower --contract ballotContractAddressOnSepolia --voter voterAddressOnSepolia  --network sepolia
-
-#get vote results who won runner ups?
-npx hardhat geVoteResults --contract ballotContractAddressOnSepolia --network sepolia
+#display vote results
+npx hardhat getVoteResults --contract ballotContractAddressOnSepolia --network sepolia
 ```

@@ -2,6 +2,7 @@ import { createWalletClient, Hex, http } from "viem";
 import { privateKeyToAccount } from "viem/accounts";
 import { sepolia } from 'viem/chains';
 import { providerApiKey } from "../conf";
+import { exit } from "process";
 
 export async function getWalletClient({
   privateKey,
@@ -23,7 +24,13 @@ export async function getWalletClient({
 }
 
 export async function waitsForTransaction(fn: any, hre:any) {
-  const hash = await fn()
+  let hash 
+    try {
+   hash = await fn()
+    } catch (e:any) {
+      console.error("caught e", e.message)
+     exit(1)
+  } 
   const publicClient = await hre.viem.getPublicClient();
   await publicClient.waitForTransactionReceipt({ hash })
 }

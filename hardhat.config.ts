@@ -90,11 +90,23 @@ task("setBallotTargetBlockNumber", "Sets target block number")
 
 import getVoteResults from "./scripts/getVoteResults"
   
-task("getVoteResults", "Gives vote results")
+task("getVoteResults", "Displays vote results")
+  .addParam("contract", "Tokenized ballot contract address")
+  .setAction(async (taskArgs, hre) => {
+    const { contract, target } = taskArgs
+    await getVoteResults({
+      hre,
+      contractAddress: contract
+    })
+})
+
+import getProposals from "./scripts/getProposals"
+  
+task("getProposals", "Displays available proposals")
 .addParam("contract", "Tokenized ballot contract address") 
 .setAction(async (taskArgs, hre) => {
   const {contract, target}  = taskArgs
-  await getVoteResults({hre,
+  await getProposals({hre,
    contractAddress:contract  
   })
 });
