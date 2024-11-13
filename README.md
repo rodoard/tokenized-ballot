@@ -48,9 +48,6 @@ npx hardhat setBallotTargetBlockNumber --contract ballotContractAddressOnSepolia
 #get available ballot voting power should not be 0 
 npx hardhat getBallotVotingPower --contract ballotContractAddressOnSepolia --voter voterAddressOnSepolia  --network sepolia
 
-#get available ballot voting power should be less 
-npx hardhat getBallotVotingPower --contract ballotContractAddressOnSepolia --voter voterAddressOnSepolia  --network sepolia
-
 #display available proposals
 npx hardhat getProposals --contract ballotContractAddressOnSepolia --network sepolia
 
@@ -59,6 +56,9 @@ npx hardhat getVoteResults --contract ballotContractAddressOnSepolia --network s
 
 #self castVote 
 npx hardhat castVote --contract ballotContractAddressOnSepolia --proposal proposalIndex --power votingPowerToConsume  --network sepolia
+
+#get available ballot voting power should be less 
+npx hardhat getBallotVotingPower --contract ballotContractAddressOnSepolia --voter voterAddressOnSepolia  --network sepolia
 
 #display vote results
 npx hardhat getVoteResults --contract ballotContractAddressOnSepolia --network sepolia
